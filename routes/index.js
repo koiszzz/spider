@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const qcc= require('../spider/qichacha');
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache({ stdTTL: 1800, checkperiod: 120 });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -27,7 +29,13 @@ router.get('/qichacha', async function (req, res, next) {
     });
   }
   try {
-    const result = await qcc(key);
+    let result = myCache.get(key);
+    if (!result) {
+      result = await qcc(key);
+      if (result) {
+        myCache.set(key, result);
+      }
+    }
     await res.json({
       status: true,
       message: '查询成功',
