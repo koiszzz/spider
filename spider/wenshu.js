@@ -1,71 +1,73 @@
 const puppeteer = require('puppeteer');
 
-(async () => {
+module.exports = async function (key) {
     const browser = await puppeteer.launch({
         headless: false
     });
-    const first = await browser.newPage();
-    await first.goto('http://wenshu.court.gov.cn/');
-    await first.type('.searchKey.search-inp', '小米科技');
     try {
-        await Promise.all([
-            first.waitForNavigation(),
-            first.click('.search-rightBtn.search-click')
-        ]);
-    } catch (e) {
-        console.log('等待超时');
-    }
-    await first.waitForSelector('.fr.con_right span');
-    let caseNum = await first.evaluate(() => {
-        return document.querySelector('.fr.con_right span').textContent;
-    });
-    let caseList;
-    console.log(`共有${caseNum}篇案件`);
-    if (caseNum < 6) { // 默认一页5篇
+        const first = await browser.newPage();
+        await first.goto('http://wenshu.court.gov.cn/');
+        await first.type('.searchKey.search-inp', key);
+        try {
+            await Promise.all([
+                first.waitForNavigation(),
+                first.click('.search-rightBtn.search-click')
+            ]);
+        } catch (e) {
+            console.log('等待超时');
+        }
+        await first.waitForSelector('.fr.con_right span');
+        let caseNum = await first.evaluate(() => {
+            return document.querySelector('.fr.con_right span').textContent;
+        });
         await first.waitForSelector('a.caseName');
-        caseList = await first.evaluate(() => {
+        let caseList = await first.evaluate(() => {
             const list = Array.from(document.querySelectorAll('a.caseName'));
             return list.map(ele => {
                 const title = ele.textContent.replace(/<[\/]?[a-z":=\s]+>/g, '');
-                return `${title} - ${ele.href}`;
+                return {
+                    title: title,
+                    href: ele.href
+                };
             });
         });
-    } else { // 超过6篇
-        await first.waitForSelector('.WS_my_pages .pageSizeSelect');
-        await first.evaluate(() => {
-            document.querySelector('.pageSizeSelect option:nth-child(3)').selected = true;
-        });
-        await first.waitForSelector('a.caseName');
-        caseList = await first.evaluate(() => {
-            const list = Array.from(document.querySelectorAll('a.caseName'));
-            return list.map(ele => {
-                const title = ele.textContent.replace(/<[\/]?[a-z":=\s]+>/g, '');
-                return `${title} - ${ele.href}`;
-            });
-        });
-        if (caseNum > 15) {
-            const PageSize = Math.ceil((caseNum > 200 ? 200 : caseNum) / 15);
-            console.log(`共有${PageSize}页`);
-            for (let i = 1 ; i < PageSize ; i++) {
-                try {
-                    await Promise.all([
-                        first.waitForNavigation(),
-                        first.click('.left_7_3 a:nth-last-child')
-                    ]);
-                } catch (e) {
-                    console.log('捕获超时');
-                }
+        console.log(`共有${caseNum}篇案件`);
+        if (caseNum >= caseList.length) { // 默认一页5篇
+            let nextPage = 2;
+            const pageSize = caseList.length;
+            const pageNum = Math.ceil(caseNum > 200 ? 200 / pageSize : caseNum / pageSize);
+            while (nextPage <= pageNum) {
+                await first.waitFor(1000);
+                await first.waitForSelector(`.left_7_3 .pageButton[value="${nextPage}"]`);
+                await first.click(`.left_7_3 .pageButton[value="${nextPage}"]`);
+                await first.waitForResponse((res) => res.url().includes('rest.q4w'));
+                await first.waitFor(2000);
                 await first.waitForSelector('a.caseName');
                 caseList = caseList.concat(await first.evaluate(() => {
                     const list = Array.from(document.querySelectorAll('a.caseName'));
                     return list.map(ele => {
                         const title = ele.textContent.replace(/<[\/]?[a-z":=\s]+>/g, '');
-                        return `${title} - ${ele.href}`;
+                        return {
+                            title: title,
+                            href: ele.href
+                        };
                     });
                 }));
+                nextPage ++;
             }
         }
+        for (let i = 0 ; i < caseList.length; i++) {
+            await first.goto(caseList[i].href);
+            await first.waitForSelector('.PDF_box');
+            const doc = await first.evaluate(() => {
+                return document.querySelector('.PDF_box').innerHTML;
+            });
+            caseList[i].doc = doc;
+        }
+        return caseList;
+    } catch (e) {
+        throw e;
+    } finally {
+        await browser.close();
     }
-    console.log(caseList);
-    await browser.close();
-})();
+}
