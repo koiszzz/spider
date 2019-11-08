@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer-extra');
-const pluginStealth = require("puppeteer-extra-plugin-stealth")
+const pluginStealth = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(pluginStealth());
 
 module.exports = async function (key) {

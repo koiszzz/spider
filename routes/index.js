@@ -29,39 +29,14 @@ router.get('/', function(req, res, next) {
 /**
  * 文书网
  */
-router.get('/wenshu', async function (req, res, next) {
-  const key = req.query.name;
-  if (!key || key.length <= 0) {
+router.get('/api/:apiType', async function (req, res, next) {
+  const apiType = req.params.apiType;
+  if (!apiType || apiType.length <= 0) {
     return res.json({
-      status: true,
-      message: '请输入查询公司'
-    });
-  }
-  try {
-    let result = myCache.get(key+'_wenshu');
-    if (!result) {
-      result = await wenshu(key);
-      if (result) {
-        myCache.set(key+'_wenshu', result);
-      }
-    }
-    await res.json({
-      status: true,
-      message: '查询成功',
-      data: result,
-      dataTime: new Date().Format("yyyyMMdd")
-    });
-  } catch (e) {
-    await res.json({
       status: false,
-      message: `程序错误:${e.message}`
-    })
+      message: 'API路径错误'
+    });
   }
-});
-/**
- * 企查查企业基本信息
- */
-router.get('/qichacha', async function (req, res, next) {
   const key = req.query.name;
   if (!key || key.length <= 0) {
     return res.json({
@@ -70,11 +45,18 @@ router.get('/qichacha', async function (req, res, next) {
     });
   }
   try {
-    let result = myCache.get(key + '_qcc');
+    let result = myCache.get(key+'_' + apiType);
     if (!result) {
-      result = await qcc(key);
+      switch (apiType) {
+        case 'wenshu':
+          result = await wenshu(key);
+          break;
+        case 'qichacha':
+          result = await qcc(key);
+          break;
+      }
       if (result) {
-        myCache.set(key + '_qcc', result);
+        myCache.set(key+'_' + apiType, result);
       }
     }
     await res.json({

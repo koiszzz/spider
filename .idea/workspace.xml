@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02b5e373-0adc-4ea7-92ee-899696ec4a47" name="Default Changelist" comment="添加docker配置文件&#10;添加法律文书爬虫">
+      <change afterPath="$PROJECT_DIR$/spider/creditchina.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/test_creditchina.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spider/wenshu.js" beforeDir="false" afterPath="$PROJECT_DIR$/spider/wenshu.js" afterDir="false" />
@@ -44,6 +45,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -86,7 +88,11 @@
       <workItem from="1571192263244" duration="7577000" />
       <workItem from="1571357403275" duration="19599000" />
       <workItem from="1571618897207" duration="6632000" />
-      <workItem from="1571648971496" duration="9953000" />
+      <workItem from="1571648971496" duration="27205000" />
+      <workItem from="1572055193063" duration="30000" />
+      <workItem from="1572252942617" duration="5042000" />
+      <workItem from="1572395577646" duration="3085000" />
+      <workItem from="1572827655475" duration="654000" />
     </task>
     <servers />
   </component>
