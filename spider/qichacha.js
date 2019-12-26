@@ -1,18 +1,25 @@
 const puppeteer = require('puppeteer');
 
-module.exports = async function (company) {
+module.exports = async function (company, browser) {
     if (!company || typeof company !== 'string' || company.length <= 0) {
         throw new Error('请输入公司名称');
     }
-    const browser = await puppeteer.launch({
-        headless: true,
-    });
+    if (browser === undefined || browser === null) {
+        browser = await puppeteer.launch({
+            headless: fasle,
+            args: ['--no-sandbox']
+        });
+    }
+    let pageContainer = [];
     try {
         const waitOption = {
             timeout: 60000,
             waitUntil: 'networkidle0'
         };
         const first = await browser.newPage();
+        if (first) {
+            pageContainer.push(first);
+        }
         await first.goto('https://www.qichacha.com/', waitOption);
         await first.type('#searchkey', company);
         await first.click('#V3_Search_bt');
@@ -21,6 +28,9 @@ module.exports = async function (company) {
         const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
         await first.click('#search-result .ma_h1');
         const second = await newPagePromise;
+        if (second) {
+            pageContainer.push(second);
+        }
         await second.waitForSelector('a.company-nav-head');
         const base_url = await second.evaluate(() => {
             const navs = Array.from(document.querySelectorAll('a.company-nav-head'));
@@ -39,7 +49,11 @@ module.exports = async function (company) {
         }
         await second.waitForSelector('#Cominfo');
         const content = await second.evaluate(() => {
-            const clone = document.querySelector('.data_div_login').cloneNode(true);
+            let messageBody = document.querySelector('.data_div_login');
+            if (!messageBody) {
+                messageBody = document.querySelector('.data_div');
+            }
+            const clone = messageBody.cloneNode(true);
             let info = {
                 basic_info: '',
                 changes: [],
@@ -107,6 +121,10 @@ module.exports = async function (company) {
     } catch (e) {
         throw new Error(`模拟抓取出错:${e.message}`);
     } finally {
-        await browser.close();
+        pageContainer.map((page) => {
+            if (page) {
+                page.close();
+            }
+        });
     }
 };

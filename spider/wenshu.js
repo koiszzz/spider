@@ -2,13 +2,20 @@ const puppeteer = require('puppeteer-extra');
 const pluginStealth = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(pluginStealth());
 
-module.exports = async function (key) {
-    const browser = await puppeteer.launch({
-        headless: true,
-    });
+module.exports = async function (key, browser) {
+    if (!key || typeof key !== 'string' || key.length <= 0) {
+        throw new Error('请输入公司名称');
+    }
+    if (browser === undefined || browser === null) {
+        browser = await puppeteer.launch({
+            headless: fasle,
+            args: ['--no-sandbox']
+        });
+    }
+    let pageContainer = [];
     try {
         const first = await browser.newPage();
-        await first.goto('http://wenshu.court.gov.cn/');
+        await first.goto('https://wenshu.court.gov.cn/');
         const access = await first.waitForResponse(res => {
             return res.url().includes('rest.q4w');
         });
@@ -80,6 +87,10 @@ module.exports = async function (key) {
     } catch (e) {
         throw e;
     } finally {
-        await browser.close();
+        pageContainer.map((page) => {
+            if (page) {
+                page.close();
+            }
+        });
     }
-}
+};
