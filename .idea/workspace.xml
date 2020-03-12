@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="02b5e373-0adc-4ea7-92ee-899696ec4a47" name="Default Changelist" comment="添加docker配置文件&#10;添加法律文书爬虫">
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+    <list default="true" id="02b5e373-0adc-4ea7-92ee-899696ec4a47" name="Default Changelist" comment="修改企查查按钮">
+      <change afterPath="$PROJECT_DIR$/config/qcc-account.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/spider/qichacha-boss.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/www" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spider/qichacha.js" beforeDir="false" afterPath="$PROJECT_DIR$/spider/qichacha.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/wenshu.js" beforeDir="false" afterPath="$PROJECT_DIR$/spider/wenshu.js" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,12 +33,18 @@
     <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.14.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/spider" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -48,17 +53,10 @@
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\spider\spider" />
+    </key>
   </component>
   <component name="RunManager" selected="Node.js.bin\www">
     <configuration name="test" type="js.build_tools.npm" nameIsGenerated="true">
@@ -75,6 +73,18 @@
       <item itemvalue="Node.js.bin\www" />
       <item itemvalue="npm.test" />
     </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -96,7 +106,10 @@
       <workItem from="1572827655475" duration="654000" />
       <workItem from="1574407664099" duration="1475000" />
       <workItem from="1577321559237" duration="521000" />
-      <workItem from="1577322616444" duration="5782000" />
+      <workItem from="1577322616444" duration="6655000" />
+      <workItem from="1577957211935" duration="5423000" />
+      <workItem from="1578389026207" duration="4287000" />
+      <workItem from="1583995672066" duration="1849000" />
     </task>
     <servers />
   </component>
@@ -118,6 +131,29 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="添加docker配置文件&#10;添加法律文书爬虫" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加docker配置文件&#10;添加法律文书爬虫" />
+    <MESSAGE value="修改企查查按钮" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改企查查按钮" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="693" y="315" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583995840535">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="693" y="315" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1583995840535" />
+    <state width="1877" height="165" key="GridCell.Tab.0.bottom" timestamp="1583996997946">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1583996997946" />
+    <state width="1877" height="165" key="GridCell.Tab.0.center" timestamp="1583996997946">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1583996997946" />
+    <state width="1877" height="165" key="GridCell.Tab.0.left" timestamp="1583996997946">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1583996997946" />
+    <state width="1877" height="165" key="GridCell.Tab.0.right" timestamp="1583996997946">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1583996997946" />
   </component>
 </project>

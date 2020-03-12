@@ -4,11 +4,13 @@ module.exports = async function (company, browser) {
     if (!company || typeof company !== 'string' || company.length <= 0) {
         throw new Error('请输入公司名称');
     }
+    let newBrowser = false;
     if (browser === undefined || browser === null) {
         browser = await puppeteer.launch({
             headless: fasle,
             args: ['--no-sandbox']
         });
+        newBrowser = true;
     }
     let pageContainer = [];
     try {
@@ -22,7 +24,7 @@ module.exports = async function (company, browser) {
         }
         await first.goto('https://www.qichacha.com/', waitOption);
         await first.type('#searchkey', company);
-        await first.click('#V3_Search_bt');
+        await first.click('.index-searchbtn');
         await first.waitForSelector('#search-result');
         await first.waitForSelector('#search-result .ma_h1');
         const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
@@ -121,10 +123,18 @@ module.exports = async function (company, browser) {
     } catch (e) {
         throw new Error(`模拟抓取出错:${e.message}`);
     } finally {
-        pageContainer.map((page) => {
-            if (page) {
-                page.close();
-            }
-        });
+        if (newBrowser) {
+            await browser.close();
+        } else {
+            pageContainer.map(async (page) => {
+                if (page) {
+                    try {
+                        await page.close();
+                    } catch (e) {
+                        console.log('关闭页面出错');
+                    }
+                }
+            });
+        }
     }
 };
