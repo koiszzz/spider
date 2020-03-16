@@ -2,69 +2,13 @@ const express = require('express');
 const router = express.Router();
 const qcc = require('../spider/qichacha');
 const wenshu = require('../spider/wenshu');
+const loginQichacha = require('../spider/loginQcc');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 1800, checkperiod: 120});
 const accounts = require('../config/qcc-account');
 
 let browser = [];
 let curBrowser = 0;
-async function loginQichacha(userName, password) {
-    console.log(`尝试登录企查查用户${userName}, ${password}`);
-    const puppeteer = require('puppeteer-extra');
-    const pluginStealth = require("puppeteer-extra-plugin-stealth");
-    puppeteer.use(pluginStealth());
-    const a = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox']
-    });
-    const page = await a.newPage();
-    await page.goto('https://www.qichacha.com/');
-    await page.click('.navi-btn');
-    await page.waitFor(3000);
-    await page.click('#normalLogin');
-    await page.waitFor(1000);
-    await page.type('#nameNormal', userName);
-    await page.waitFor(1000);
-    await page.type('#pwdNormal', password);
-    await page.waitFor(1000);
-    const checkEle = await page.$('#dom_id_one');
-    const rect = await page.evaluate((checkEle) => {
-        const {top, left, bottom, right} = checkEle.getBoundingClientRect();
-        return {top, left, bottom, right};
-    }, checkEle);
-    let checkBarState = true;
-    let checkTimes = 0;
-    while (checkBarState) {
-        if (checkTimes > 10) {
-            break;
-        }
-        console.log('条形验证码验证中');
-        await page.mouse.move(rect.left + 10, rect.top + 10);
-        await page.mouse.down();
-        await page.waitFor(100);
-        await page.mouse.move(rect.right + 50, rect.top + 10, {steps: 1});
-        await page.waitFor(100);
-        await page.mouse.up();
-        try {
-            // 可能会校验失败
-            await page.waitFor('.errloading', {timeout: 3000});
-            await page.click('.errloading a');
-            console.log('条形验证失败');
-        } catch (e) {
-            console.log('验证通过，没有失败元素');
-            checkBarState = false;
-            checkTimes++;
-        }
-    }
-    if (checkTimes > 10) {
-        await a.close();
-        return null;
-    }
-    await page.click('.login-btn');
-    await page.waitFor(3000);
-    await page.close();
-    return a;
-}
 
 (async () => {
     accounts.map(async (account) => {
@@ -112,14 +56,7 @@ router.get('/', function (req, res, next) {
 /**
  * 文书网
  */
-router.get('/api/:apiType', async function (req, res, next) {
-    const apiType = req.params.apiType;
-    if (!apiType || apiType.length <= 0) {
-        return res.json({
-            status: false,
-            message: 'API路径错误'
-        });
-    }
+router.get('/api/wenshu', async function (req, res, next) {
     const key = req.query.name;
     if (!key || key.length <= 0) {
         return res.json({
@@ -128,26 +65,11 @@ router.get('/api/:apiType', async function (req, res, next) {
         });
     }
     try {
-        let result = myCache.get(key + '_' + apiType);
+        let result = myCache.get(key + '_wenshu');
         if (!result) {
-            switch (apiType) {
-                case 'wenshu':
-                    result = await wenshu(key, browserEx);
-                    break;
-                case 'qichacha':
-                    let temp;
-                    if (browser.length > 0) {
-                        temp = browser[curBrowser];
-                        curBrowser++;
-                        if (curBrowser >= browser.length) {
-                            curBrowser = 0;
-                        }
-                    }
-                    result = await qcc(key, temp);
-                    break;
-            }
+            result = await wenshu(key, browserEx);
             if (result) {
-                myCache.set(key + '_' + apiType, result);
+                myCache.set(key + '_wenshu', result);
             }
         }
         await res.json({
@@ -161,6 +83,44 @@ router.get('/api/:apiType', async function (req, res, next) {
             status: false,
             message: `程序错误:${e.message}`
         })
+    }
+});
+
+router.get('/api/qichacha', async (req, res) => {
+    const key = req.query.name;
+    if (!key || key.length <= 0) {
+        return res.json({
+            status: true,
+            message: '请输入查询公司'
+        });
+    }
+    try {
+        let result = myCache.get(key + '_qichacha');
+        if (!result) {
+            let temp;
+            if (browser.length > 0) {
+                temp = browser[curBrowser];
+                curBrowser++;
+                if (curBrowser >= browser.length) {
+                    curBrowser = 0;
+                }
+            }
+            result = await qcc(key, temp);
+            if (result) {
+                myCache.set(key + '_qichacha', result);
+            }
+        }
+        await res.json({
+            status: true,
+            message: '查询成功',
+            data: result,
+            dataTime: new Date().Format("yyyyMMdd")
+        });
+    } catch (e) {
+        await res.json({
+            status: false,
+            message: `程序错误:${e.message}`
+        });
     }
 });
 

@@ -25,6 +25,28 @@ module.exports = async function (company, browser) {
         await first.goto('https://www.qichacha.com/', waitOption);
         await first.type('#searchkey', company);
         await first.click('.index-searchbtn');
+        await first.waitFor(1500);
+        const checkCurPage = await first.evaluate(() => {
+            const errorEle = document.querySelector('.error');
+            if (errorEle) {
+                return -1;
+            }
+            return 0;
+        });
+        console.log('页面检查结果:' + checkCurPage);
+        if (checkCurPage === -1) { //账户可能被暂封了
+            return {};
+        }
+        await page.waitForSelector('##countOld');
+        // 判断查询结果数量
+        const searchCount = await page.evaluate(() => {
+           const count = document.querySelector('#countOld .text-danger').textContent.trim();
+           return +count;
+        });
+        if (searchCount === 0) {
+            console.log('没有找到该企业名称');
+            return {};
+        }
         await first.waitForSelector('#search-result');
         await first.waitForSelector('#search-result .ma_h1');
         const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
