@@ -88,4 +88,6 @@ typings/
 .dynamodb/
 
 # 配置文件
-./config
+/configs
+/configs/*
+configs/

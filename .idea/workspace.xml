@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02b5e373-0adc-4ea7-92ee-899696ec4a47" name="Default Changelist" comment="修改企查查按钮">
-      <change afterPath="$PROJECT_DIR$/spider/loginQcc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/qcc-account.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/qcc-account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/qichacha.js" beforeDir="false" afterPath="$PROJECT_DIR$/spider/qichacha.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +105,7 @@
       <workItem from="1577957211935" duration="5423000" />
       <workItem from="1578389026207" duration="4287000" />
       <workItem from="1583995672066" duration="2056000" />
-      <workItem from="1584264673491" duration="6229000" />
+      <workItem from="1584264673491" duration="6604000" />
     </task>
     <servers />
   </component>

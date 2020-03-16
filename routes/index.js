@@ -5,7 +5,7 @@ const wenshu = require('../spider/wenshu');
 const loginQichacha = require('../spider/loginQcc');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 1800, checkperiod: 120});
-const accounts = require('../config/qcc-account');
+const accounts = require('../configs/qcc-accounts');
 
 let browser = [];
 let curBrowser = 0;
