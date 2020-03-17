@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const qcc = require('../spider/qichacha');
 const wenshu = require('../spider/wenshu');
-const loginQichacha = require('../spider/loginQcc');
+// const loginQichacha = require('../spider/loginQcc');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 1800, checkperiod: 120});
 // const accounts = require('../configs/qcc-accounts');
@@ -18,7 +18,9 @@ async function  openBrowser(defaultUrl) {
         headless: true,
         args: ['--no-sandbox']
     });
+    console.log('打开浏览器');
     if (defaultUrl) {
+        console.log(`打开${defaultUrl}`);
         const first = await localBrowser.newPage();
         first.goto(defaultUrl);
     }
@@ -123,6 +125,44 @@ router.get('/api/qichacha', async (req, res) => {
             result = await qcc(key, temp);
             if (result) {
                 myCache.set(key + '_qichacha', result);
+            }
+        }
+        await res.json({
+            status: true,
+            message: '查询成功',
+            data: result,
+            dataTime: new Date().Format("yyyyMMdd")
+        });
+    } catch (e) {
+        await res.json({
+            status: false,
+            message: `程序错误:${e.message}`
+        });
+    }
+});
+
+router.get('/api/qichacha-state', async (req, res) => {
+    const key = req.query.name;
+    if (!key || key.length <= 0) {
+        return res.json({
+            status: true,
+            message: '请输入查询的企业主名称'
+        });
+    }
+    try {
+        let result = myCache.get(key + '_qichachaState');
+        if (!result) {
+            let temp;
+            if (browser.length > 0) {
+                temp = browser[curBrowser];
+                curBrowser++;
+                if (curBrowser >= browser.length) {
+                    curBrowser = 0;
+                }
+            }
+            result = await require('../spider/qichacha-state')(key, temp);
+            if (result) {
+                myCache.set(key + '_qichachaState', result);
             }
         }
         await res.json({

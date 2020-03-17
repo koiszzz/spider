@@ -2,7 +2,6 @@ module.exports = async function (person, browser) {
     if (!person || typeof person !== 'string' || person.length <= 0) {
         throw new Error('请输入人名');
     }
-    let newBrowser = false;
     if (browser === undefined || browser === null) {
         throw new Error('请提供用户登录的浏览器');
     }
@@ -16,7 +15,7 @@ module.exports = async function (person, browser) {
         if (first) {
             pageContainer.push(first);
         }
-        await first.goto(`https://www.qichacha.com/boss_search?key=${person}&industryInfo=&areaInfo=福建%20泉州市%20晋江市`, waitOption);
+        await first.goto(`https://www.qcc.com/boss_search?key=${person}&industryInfo=&areaInfo=福建%20泉州市%20晋江市`, waitOption);
         const data = await first.evaluate(() => {
             const findNum = +document.querySelector('.m_search_head .font-15.text-dark .text-danger').textContent.trim();
             if (findNum === 0) {
@@ -32,20 +31,17 @@ module.exports = async function (person, browser) {
         });
         return data;
     } catch (e) {
+        console.log(e);
         throw new Error(`模拟抓取出错:${e.message}`);
     } finally {
-        if (newBrowser) {
-            await browser.close();
-        } else {
-            pageContainer.map(async (page) => {
-                if (page) {
-                    try {
-                        await page.close();
-                    } catch (e) {
-                        console.log('关闭页面出错');
-                    }
+        pageContainer.map(async (page) => {
+            if (page) {
+                try {
+                    await page.close();
+                } catch (e) {
+                    console.log('关闭页面出错');
                 }
-            });
-        }
+            }
+        });
     }
 };

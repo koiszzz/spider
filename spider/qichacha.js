@@ -122,7 +122,7 @@ module.exports = async function (company, browser) {
                     info.basic_info += ':';
                 }
             });
-            info.basic_info = info.basic_info.replace(/他关联[\d]+家企业/, '').replace('>', '')
+            info.basic_info = info.basic_info.replace(/[他]?关联[\s\d]?家企业/, '').replace('>', '')
                 .replace('查看地图', '').replace('附近企业', '');
             const sections = ['partnerslist', 'Mainmember', 'touzilist', 'branchelist', 'stockholderslist'];
             sections.map((id) => {
@@ -142,7 +142,7 @@ module.exports = async function (company, browser) {
                             .replace('查看最终受益人>', '')
                             .replace(/股权结构[\s]+>/, '')
                             .replace('持股详情>', '')
-                            .replace(/他关联[\s\d]+家企业[\s]+>/, '')
+                            .replace(/[他]?关联[\s\d]?家企业[\s]+>/, '')
                             .replace(/[\r\n]+/g, '')
                             .replace('查看最终受益人>', '')
                             .replace(/([\u4e00-\u9fa5]+\s+序号\s+([\u4e00-\u9fa5]+))/, "$2")
