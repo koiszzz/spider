@@ -5,31 +5,46 @@ const wenshu = require('../spider/wenshu');
 const loginQichacha = require('../spider/loginQcc');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 1800, checkperiod: 120});
-const accounts = require('../configs/qcc-accounts');
+// const accounts = require('../configs/qcc-accounts');
 
 let browser = [];
 let curBrowser = 0;
 
-(async () => {
-    accounts.map(async (account) => {
-        if (!account.user || !account.password) {
-            return null;
-        }
-        const b = await loginQichacha(account.user, account.password);
-        if (b) {
-            browser.push(b);
-        }
-    })
-})();
-let browserEx;
-(async () => {
+async function  openBrowser(defaultUrl) {
     const puppeteer = require('puppeteer-extra');
     const pluginStealth = require("puppeteer-extra-plugin-stealth");
     puppeteer.use(pluginStealth());
-    browserEx = await puppeteer.launch({
+    const localBrowser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox']
     });
+    if (defaultUrl) {
+        const first = await localBrowser.newPage();
+        first.goto(defaultUrl);
+    }
+    return localBrowser;
+}
+
+(async () => {
+    // accounts.map(async (account) => {
+    //     if (!account.user || !account.password) {
+    //         return null;
+    //     }
+    //     const b = await loginQichacha(account.user, account.password);
+    //     if (b) {
+    //         browser.push(b);
+    //     }
+    // })
+    ['1', '2'].map((async () => {
+        const b = await openBrowser('https://qcc.com');
+        if (b) {
+            browser.push(b);
+        }
+    }));
+})();
+let browserEx;
+(async () => {
+    browserEx = await openBrowser();
 })();
 
 Date.prototype.Format = function (fmt) { //author: meizz

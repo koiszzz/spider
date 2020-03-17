@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02b5e373-0adc-4ea7-92ee-899696ec4a47" name="Default Changelist" comment="修改企查查按钮">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/www" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spider/qichacha.js" beforeDir="false" afterPath="$PROJECT_DIR$/spider/qichacha.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +42,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.14.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jns_new/jns" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -105,7 +108,9 @@
       <workItem from="1577957211935" duration="5423000" />
       <workItem from="1578389026207" duration="4287000" />
       <workItem from="1583995672066" duration="2056000" />
-      <workItem from="1584264673491" duration="6604000" />
+      <workItem from="1584264673491" duration="7648000" />
+      <workItem from="1584324092755" duration="72000" />
+      <workItem from="1584326435497" duration="10288000" />
     </task>
     <servers />
   </component>
@@ -135,21 +140,33 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="693" y="315" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1583995840535" />
-    <state width="1877" height="165" key="GridCell.Tab.0.bottom" timestamp="1584318878161">
+    <state x="741" y="275" key="FileChooserDialogImpl" timestamp="1584343571439">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1584318878161" />
-    <state width="1877" height="165" key="GridCell.Tab.0.center" timestamp="1584318878161">
+    <state x="741" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1584343571439" />
+    <state width="1877" height="165" key="GridCell.Tab.0.bottom" timestamp="1584406483909">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1584318878161" />
-    <state width="1877" height="165" key="GridCell.Tab.0.left" timestamp="1584318878161">
+    <state width="1877" height="165" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1584406483909" />
+    <state width="1877" height="165" key="GridCell.Tab.0.center" timestamp="1584406483909">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1584318878161" />
-    <state width="1877" height="165" key="GridCell.Tab.0.right" timestamp="1584318878161">
+    <state width="1877" height="165" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1584406483909" />
+    <state width="1877" height="165" key="GridCell.Tab.0.left" timestamp="1584406483909">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1584318878161" />
+    <state width="1877" height="165" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1584406483909" />
+    <state width="1877" height="165" key="GridCell.Tab.0.right" timestamp="1584406483909">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="165" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1584406483909" />
+    <state x="619" y="242" key="run.anything.popup" timestamp="1584342394378">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="619" y="242" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584342394378" />
+    <state x="623" y="226" width="672" height="678" key="search.everywhere.popup" timestamp="1584328173578">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="226" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584328173578" />
   </component>
 </project>

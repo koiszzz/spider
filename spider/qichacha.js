@@ -22,43 +22,74 @@ module.exports = async function (company, browser) {
         if (first) {
             pageContainer.push(first);
         }
-        await first.goto('https://www.qichacha.com/', waitOption);
-        await first.type('#searchkey', company);
-        await first.click('.index-searchbtn');
-        await first.waitFor(1500);
-        const checkCurPage = await first.evaluate(() => {
-            const errorEle = document.querySelector('.error');
-            if (errorEle) {
-                return -1;
-            }
-            return 0;
-        });
-        console.log('页面检查结果:' + checkCurPage);
-        if (checkCurPage === -1) { //账户可能被暂封了
-            return {};
-        }
-        await page.waitForSelector('##countOld');
+        // await first.goto('https://www.qichacha.com/', waitOption);
+        // await first.type('#searchkey', company);
+        // await first.click('.index-searchbtn');
+        // await first.waitFor(1500);
+        // const checkCurPage = await first.evaluate(() => {
+        //     const errorEle = document.querySelector('.error');
+        //     if (errorEle) {
+        //         return -1;
+        //     }
+        //     return 0;
+        // });
+        // console.log('页面检查结果:' + checkCurPage);
+        // if (checkCurPage === -1) { //账户可能被暂封了
+        //     return {};
+        // }
+        await first.goto(`https://www.qcc.com/search?key=${company}`, waitOption);
+        await first.waitForSelector('#countOld');
         // 判断查询结果数量
-        const searchCount = await page.evaluate(() => {
-           const count = document.querySelector('#countOld .text-danger').textContent.trim();
-           return +count;
+        const searchCount = await first.evaluate(() => {
+            const count = document.querySelector('#countOld .text-danger').textContent.trim();
+            return +count;
         });
         if (searchCount === 0) {
             console.log('没有找到该企业名称');
             return {};
         }
         await first.waitForSelector('#search-result');
-        await first.waitForSelector('#search-result .ma_h1');
-        const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
-        await first.click('#search-result .ma_h1');
-        const second = await newPagePromise;
-        if (second) {
-            pageContainer.push(second);
+        const matchCompanies = await first.evaluate(() => {
+            return Array.from(document.querySelectorAll('#search-result tr:not(.frtr)')).map((e) => {
+                const d = {
+                    name: e.querySelector('.ma_h1').textContent.trim(),
+                    url: e.querySelector('.ma_h1').href,
+                    tags: e.querySelector('.search-tags').textContent.trim(),
+                    status: e.querySelector('.statustd').textContent.trim().replace(/([^\s]+)\s*([^\s]+)\s*(微信或企查查APP 扫一扫查看详情)?(企查查APP 扫一扫查看详情)?/, '$1'),
+                    search: e.querySelector('p:not(.m-t-xs)').textContent.trim()
+                };
+                Array.from(e.querySelectorAll('.m-t-xs')).map((z) => {
+                    return z.textContent.trim().replace('更多号码', '').replace(/[\r\n]+/g, '').replace(/[\s]+/g, ' ').replace(/：\s+/, '：').replace(/\s/g, ';;;')
+                }).join(';;;').split(';;;').map((v) => {
+                    if (v && v.length > 0) {
+                        const s = v.split('：');
+                        if (s.length === 2) {
+                            d[s[0]] = s[1];
+                        }
+                    }
+                });
+                if (d.search.includes('曾用名：')) {
+                    d.usedName = d.search.replace('曾用名：', '');
+                }
+                return d;
+            });
+        });
+        let filterResult = matchCompanies.filter((v) => {
+            return (v.name === company || (v.usedName && v.usedName === company)) && v.tags.length <= 0; // 可能有同名的外企，优先滤掉外企
+        });
+        if (filterResult.length <= 0) {
+            filterResult = matchCompanies.filter((v) => {
+                return v.name === company || (v.usedName && v.usedName === company); // 如果没有找到 再匹配外企
+            });
+            if (filterResult.length <= 0) {
+                return {};
+            }
         }
-        await second.waitForSelector('a.company-nav-head');
-        const base_url = await second.evaluate(() => {
+        await first.goto(filterResult[0].url);
+        await first.waitForSelector('a.company-nav-head');
+        const base_url = await first.evaluate(() => {
             const navs = Array.from(document.querySelectorAll('a.company-nav-head'));
-            for (let i = 0 ; i < navs.length ; i++) {
+            for (let i = 0; i < navs.length; i++) {
                 if (navs[i].textContent.includes('基本信息')) {
                     if (i === 0) {
                         return null;
@@ -69,10 +100,10 @@ module.exports = async function (company, browser) {
             }
         });
         if (base_url != null) {
-            second.goto(base_url);
+            first.goto(base_url);
         }
-        await second.waitForSelector('#Cominfo');
-        const content = await second.evaluate(() => {
+        await first.waitForSelector('#Cominfo');
+        const content = await first.evaluate(() => {
             let messageBody = document.querySelector('.data_div_login');
             if (!messageBody) {
                 messageBody = document.querySelector('.data_div');
@@ -143,6 +174,7 @@ module.exports = async function (company, browser) {
         });
         return content;
     } catch (e) {
+        console.log(e);
         throw new Error(`模拟抓取出错:${e.message}`);
     } finally {
         if (newBrowser) {
