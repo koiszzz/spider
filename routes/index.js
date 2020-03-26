@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const qcc = require('../spider/qichacha');
 const wenshu = require('../spider/wenshu');
-// const loginQichacha = require('../spider/loginQcc');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 1800, checkperiod: 120});
-// const accounts = require('../configs/qcc-accounts');
+const accounts = require('../configs/qcc-accounts');
 
 let browser = [];
 let curBrowser = 0;
@@ -37,7 +36,7 @@ async function  openBrowser(defaultUrl) {
     //         browser.push(b);
     //     }
     // })
-    ['1', '2'].map((async () => {
+    accounts.map((async () => {
         const b = await openBrowser('https://qcc.com');
         if (b) {
             browser.push(b);
@@ -47,6 +46,8 @@ async function  openBrowser(defaultUrl) {
 let browserEx;
 (async () => {
     browserEx = await openBrowser();
+    if (accounts && accounts.length > 0) {
+    }
 })();
 
 Date.prototype.Format = function (fmt) { //author: meizz
@@ -105,6 +106,7 @@ router.get('/api/wenshu', async function (req, res, next) {
 
 router.get('/api/qichacha', async (req, res) => {
     const key = req.query.name;
+    const vip = req.query.vip;
     if (!key || key.length <= 0) {
         return res.json({
             status: true,

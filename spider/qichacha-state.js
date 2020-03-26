@@ -1,3 +1,5 @@
+const login = require('./qichachaPageLogin');
+
 module.exports = async function (company, browser) {
     if (!company || typeof company !== 'string' || company.length <= 0) {
         throw new Error('请输入公司名称');
@@ -16,6 +18,14 @@ module.exports = async function (company, browser) {
             pageContainer.push(first);
         }
         await first.goto(`https://www.qcc.com/search?key=${company}`, waitOption);
+        if (first.url().indexOf('user_login') >= 0) {
+            const loginRs = await login(first);
+            if (loginRs) {
+                console.log('登录成功');
+            } else {
+                throw new Error('登录预设用户失败');
+            }
+        }
         await first.waitForSelector('#countOld');
         // 判断查询结果数量
         const searchCount = await first.evaluate(() => {
@@ -58,7 +68,7 @@ module.exports = async function (company, browser) {
             return v.name === company || (v.usedName && v.usedName === company);
         });
     } catch (e) {
-        throw new Error(`模拟抓取出错:${e.message}`);
+        throw new Error(`模拟抓取出错,${e.message}`);
     } finally {
         pageContainer.map(async (page) => {
             if (page) {

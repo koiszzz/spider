@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const login = require('./qichachaPageLogin');
 
 module.exports = async function (company, browser) {
     if (!company || typeof company !== 'string' || company.length <= 0) {
@@ -7,7 +8,7 @@ module.exports = async function (company, browser) {
     let newBrowser = false;
     if (browser === undefined || browser === null) {
         browser = await puppeteer.launch({
-            headless: fasle,
+            headless: false,
             args: ['--no-sandbox']
         });
         newBrowser = true;
@@ -38,6 +39,14 @@ module.exports = async function (company, browser) {
         //     return {};
         // }
         await first.goto(`https://www.qcc.com/search?key=${company}`, waitOption);
+        if (first.url().indexOf('user_login') >= 0) {
+            const loginRs = await login(first);
+            if (loginRs) {
+                console.log('登录成功');
+            } else {
+                throw new Error('登录预设用户失败');
+            }
+        }
         await first.waitForSelector('#countOld');
         // 判断查询结果数量
         const searchCount = await first.evaluate(() => {

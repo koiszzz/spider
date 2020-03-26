@@ -1,3 +1,5 @@
+const login = require('./qichachaPageLogin');
+
 module.exports = async function (person, browser) {
     if (!person || typeof person !== 'string' || person.length <= 0) {
         throw new Error('请输入人名');
@@ -16,6 +18,14 @@ module.exports = async function (person, browser) {
             pageContainer.push(first);
         }
         await first.goto(`https://www.qcc.com/boss_search?key=${person}&industryInfo=&areaInfo=福建%20泉州市%20晋江市`, waitOption);
+        if (first.url().indexOf('user_login') >= 0) {
+            const loginRs = await login(first);
+            if (loginRs) {
+                console.log('登录成功');
+            } else {
+                throw new Error('登录预设用户失败');
+            }
+        }
         const data = await first.evaluate(() => {
             const findNum = +document.querySelector('.m_search_head .font-15.text-dark .text-danger').textContent.trim();
             if (findNum === 0) {
