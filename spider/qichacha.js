@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
-const login = require('./qichachaPageLogin');
+const login = require('./qichacha-user_login');
+const verify = require('./qichacha-index_vefiry');
 
 module.exports = async function (company, browser) {
     if (!company || typeof company !== 'string' || company.length <= 0) {
@@ -13,6 +14,7 @@ module.exports = async function (company, browser) {
         });
         newBrowser = true;
     }
+    company = company.replace(/[/(]/g, '（').replace(/[/)]/g, '）');
     let pageContainer = [];
     try {
         const waitOption = {
@@ -45,6 +47,15 @@ module.exports = async function (company, browser) {
                 console.log('登录成功');
             } else {
                 throw new Error('登录预设用户失败');
+            }
+        }
+        if (first.url().indexOf('index_verify') >= 0) {
+            console.log('系统需要通过验证码才可以查询');
+            const loginRs = await verify(first);
+            if (loginRs) {
+                console.log('验证成功');
+            } else {
+                throw new Error('验证码验证失败');
             }
         }
         await first.waitForSelector('#countOld');

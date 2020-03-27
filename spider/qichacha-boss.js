@@ -1,4 +1,5 @@
-const login = require('./qichachaPageLogin');
+const login = require('./qichacha-user_login');
+const verify = require('./qichacha-index_vefiry');
 
 module.exports = async function (person, browser) {
     if (!person || typeof person !== 'string' || person.length <= 0) {
@@ -24,6 +25,15 @@ module.exports = async function (person, browser) {
                 console.log('登录成功');
             } else {
                 throw new Error('登录预设用户失败');
+            }
+        }
+        if (first.url().indexOf('index_verify') >= 0) {
+            console.log('系统需要通过验证码才可以查询');
+            const loginRs = await verify(first);
+            if (loginRs) {
+                console.log('验证成功');
+            } else {
+                throw new Error('验证码验证失败');
             }
         }
         const data = await first.evaluate(() => {

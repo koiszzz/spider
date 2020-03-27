@@ -1,16 +1,5 @@
-const accounts = require('../configs/qcc-accounts');
-
 module.exports = async function (page) {
-    await page.click('#normalLogin');
-    await page.waitFor(1000);
-    await page.type('#nameNormal', accounts[0].user);
-    await page.waitFor(1000);
-    await page.type('#pwdNormal', accounts[0].password);
-    await page.waitFor(1000);
-    let checkEle = await page.$('#dom_id_one');
-    if (!checkEle) {
-        checkEle = await page.$('#dom_id_two');
-    }
+    let checkEle = await page.$('#dom_id');
     const rect = await page.evaluate((checkEle) => {
         const {top, left, bottom, right} = checkEle.getBoundingClientRect();
         return {top, left, bottom, right};
@@ -45,9 +34,10 @@ module.exports = async function (page) {
         }
     }
     if (checkTimes > maxTry) {
+        console.log('超过最大登录尝试次数');
         return false;
     }
-    await page.click('.login-btn');
-    await page.waitFor(3000);
+    await page.click('#verify');
+    await page.waitFor(1500);
     return true;
 };
