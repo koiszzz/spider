@@ -120,7 +120,7 @@ module.exports = async function (company, browser) {
             }
         });
         if (base_url != null) {
-            first.goto(base_url);
+            await first.goto(base_url);
         }
         await first.waitForSelector('#Cominfo');
         const content = await first.evaluate(() => {
