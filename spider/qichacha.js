@@ -124,17 +124,12 @@ module.exports = async function (company, browser) {
         }
         await first.waitForSelector('#Cominfo');
         const content = await first.evaluate(() => {
-            let messageBody = document.querySelector('.data_div_login');
-            if (!messageBody) {
-                messageBody = document.querySelector('.data_div');
-            }
-            const clone = messageBody.cloneNode(true);
             let info = {
                 basic_info: '',
                 changes: [],
                 intro: ''
             };
-            Array.from(clone.querySelector('#Cominfo').querySelectorAll('td')).map((row, index) => {
+            Array.from(document.querySelector('#Cominfo').querySelectorAll('td')).map((row, index) => {
                 info.basic_info += row.textContent.replace(/[\r\n\s]+/g, '').trim();
                 if (index % 2 == 1) {
                     info.basic_info += '\r\n';
@@ -142,11 +137,11 @@ module.exports = async function (company, browser) {
                     info.basic_info += ':';
                 }
             });
-            info.basic_info = info.basic_info.replace(/[他]?关联[\s\d]?家企业/, '').replace('>', '')
+            info.basic_info = info.basic_info.replace(/[他]?关联([\s]?\d{1,})?家企业/, '').replace('>', '')
                 .replace('查看地图', '').replace('附近企业', '');
             const sections = ['partnerslist', 'Mainmember', 'touzilist', 'branchelist', 'stockholderslist'];
             sections.map((id) => {
-                const listElement = clone.querySelector('#' + id);
+                const listElement = document.querySelector('#' + id);
                 if (listElement === undefined || listElement === null) { // 不同企业展示的区块不一样
                     return;
                 }
@@ -162,7 +157,7 @@ module.exports = async function (company, browser) {
                             .replace('查看最终受益人>', '')
                             .replace(/股权结构[\s]+>/, '')
                             .replace('持股详情>', '')
-                            .replace(/[他]?关联[\s\d]?家企业[\s]+>/, '')
+                            .replace(/[他]?关联([\s]?\d{1,})?家企业[\s]+>/, '')
                             .replace(/[\r\n]+/g, '')
                             .replace('查看最终受益人>', '')
                             .replace(/([\u4e00-\u9fa5]+\s+序号\s+([\u4e00-\u9fa5]+))/, "$2")
@@ -173,7 +168,7 @@ module.exports = async function (company, browser) {
                 info[id] = res;
             });
 
-            const Changelist = clone.querySelector('#Changelist');
+            const Changelist = document.querySelector('#Changelist');
             if (Changelist) {
                 info.changes.push(Array.from(Changelist.querySelectorAll('th')).map((row) => {
                     return row.textContent.trim();
@@ -185,7 +180,7 @@ module.exports = async function (company, browser) {
                     info.changes.push(changes.splice(0, info.changes[0].length));
                 }
             }
-            const Comintroduce = clone.querySelector('#Comintroduce');
+            const Comintroduce = document.querySelector('#Comintroduce');
             if (Comintroduce) {
                 Comintroduce.querySelector('h3').remove();
                 info.intro = Comintroduce.textContent.replace(/[\r\n\s]+/g, '');
