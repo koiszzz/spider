@@ -182,7 +182,10 @@ module.exports = async function (company, browser) {
             }
             const Comintroduce = document.querySelector('#Comintroduce');
             if (Comintroduce) {
-                Comintroduce.querySelector('h3').remove();
+                let header = Comintroduce.querySelector('h3') || Comintroduce.querySelector('.tcaption');
+                if (header) {
+                    header.remove();
+                }
                 info.intro = Comintroduce.textContent.replace(/[\r\n\s]+/g, '');
             }
             return info;
