@@ -58,25 +58,25 @@ module.exports = async function (company, browser) {
                 throw new Error('验证码验证失败');
             }
         }
-        await first.waitForSelector('#countOld');
+        await first.waitForSelector('.npanel-heading .text-danger');
         // 判断查询结果数量
         const searchCount = await first.evaluate(() => {
-            const count = document.querySelector('#countOld .text-danger').textContent.trim();
+            const count = document.querySelector('.npanel-heading .text-danger').textContent.trim();
             return +count;
         });
         if (searchCount === 0) {
             console.log('没有找到该企业名称');
             return {};
         }
-        await first.waitForSelector('#search-result');
+        await first.waitForSelector('.msearch');
         const matchCompanies = await first.evaluate(() => {
-            return Array.from(document.querySelectorAll('#search-result tr:not(.frtr)')).map((e) => {
+            return Array.from(document.querySelectorAll('.msearch tr:not(.frtr)')).map((e) => {
                 const d = {
-                    name: e.querySelector('.ma_h1').textContent.trim(),
-                    url: e.querySelector('.ma_h1').href,
-                    tags: e.querySelector('.search-tags').textContent.trim(),
-                    status: e.querySelector('.statustd').textContent.trim().replace(/([^\s]+)\s*([^\s]+)\s*(微信或企查查APP 扫一扫查看详情)?(企查查APP 扫一扫查看详情)?/, '$1'),
-                    search: e.querySelector('p:not(.m-t-xs)').textContent.trim()
+                    name: e.querySelector('.maininfo .title').textContent.trim(),
+                    url: e.querySelector('.maininfo a').href,
+                    tags: e.querySelector('.maininfo .search-tags').textContent.trim(),
+                    status: e.querySelector('.maininfo .ntag').textContent.trim(),
+                    // search: e.querySelector('p:not(.m-t-xs)').textContent.trim()
                 };
                 Array.from(e.querySelectorAll('.m-t-xs')).map((z) => {
                     return z.textContent.trim().replace('更多号码', '').replace(/[\r\n]+/g, '').replace(/[\s]+/g, ' ').replace(/：\s+/, '：').replace(/\s/g, ';;;')
@@ -88,7 +88,7 @@ module.exports = async function (company, browser) {
                         }
                     }
                 });
-                if (d.search.includes('曾用名：')) {
+                if (d.search && d.search.includes('曾用名：')) {
                     d.usedName = d.search.replace('曾用名：', '');
                 }
                 return d;

@@ -22,17 +22,16 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
+  <component name="JupyterTrust" id="d18d404f-9292-49ed-9857-d4ea265e876b" />
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectId" id="1SGaBzCMWRjAPD5PI81AifLon2B" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
-    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -41,7 +40,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.14.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jns_new/jns" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.19.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -49,6 +49,7 @@
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -71,18 +72,7 @@
       <item itemvalue="npm.test" />
     </list>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -113,24 +103,28 @@
       <workItem from="1585102120524" duration="21462000" />
       <workItem from="1585816839745" duration="2539000" />
       <workItem from="1585883007123" duration="8368000" />
+      <workItem from="1593337575858" duration="997000" />
+      <workItem from="1599525244357" duration="1614000" />
+      <workItem from="1603765306106" duration="1316000" />
+      <workItem from="1603784720960" duration="610000" />
+      <workItem from="1607053970976" duration="1752000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="添加docker配置文件&#10;添加法律文书爬虫" />
@@ -138,49 +132,25 @@
     <option name="LAST_COMMIT_MESSAGE" value="修改企查查按钮" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585125809379">
+    <state x="741" y="275" key="FileChooserDialogImpl" timestamp="1603784733545">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585125809379" />
-    <state x="693" y="315" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583995840535">
+    <state x="741" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603784733545" />
+    <state width="1878" height="168" key="GridCell.Tab.0.bottom" timestamp="1603785828546">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="693" y="315" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1583995840535" />
-    <state x="741" y="275" key="FileChooserDialogImpl" timestamp="1586482574932">
+    <state width="1878" height="168" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603785828546" />
+    <state width="1878" height="168" key="GridCell.Tab.0.center" timestamp="1603785828545">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="741" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586482574932" />
-    <state width="1877" height="165" key="GridCell.Tab.0.bottom" timestamp="1586827669227">
+    <state width="1878" height="168" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603785828545" />
+    <state width="1878" height="168" key="GridCell.Tab.0.left" timestamp="1603785828545">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.bottom/0.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1584686195152" />
-    <state width="1877" height="165" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1586827669227" />
-    <state width="1877" height="165" key="GridCell.Tab.0.center" timestamp="1586827669227">
+    <state width="1878" height="168" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603785828545" />
+    <state width="1878" height="168" key="GridCell.Tab.0.right" timestamp="1603785828546">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.center/0.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1584686195152" />
-    <state width="1877" height="165" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1586827669227" />
-    <state width="1877" height="165" key="GridCell.Tab.0.left" timestamp="1586827669227">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.left/0.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1584686195152" />
-    <state width="1877" height="165" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1586827669227" />
-    <state width="1877" height="165" key="GridCell.Tab.0.right" timestamp="1586827669227">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="165" key="GridCell.Tab.0.right/0.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1584686195152" />
-    <state width="1877" height="165" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1586827669227" />
-    <state x="629" y="122" width="661" height="795" key="find.popup" timestamp="1585124302989">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="629" y="122" width="661" height="795" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1585124302989" />
-    <state x="619" y="242" key="run.anything.popup" timestamp="1584342394378">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="619" y="242" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584342394378" />
-    <state x="623" y="226" width="672" height="678" key="search.everywhere.popup" timestamp="1584328173578">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="623" y="226" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584328173578" />
+    <state width="1878" height="168" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603785828546" />
   </component>
 </project>
