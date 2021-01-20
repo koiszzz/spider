@@ -75,7 +75,7 @@ module.exports = async function (company, browser) {
                     name: e.querySelector('.maininfo .title').textContent.trim(),
                     url: e.querySelector('.maininfo a').href,
                     tags: e.querySelector('.maininfo .search-tags').textContent.trim(),
-                    status: e.querySelector('.maininfo .ntag').textContent.trim(),
+                    status: e.querySelector('.maininfo .nstatus ').textContent.trim(),
                     // search: e.querySelector('p:not(.m-t-xs)').textContent.trim()
                 };
                 Array.from(e.querySelectorAll('.m-t-xs')).map((z) => {
