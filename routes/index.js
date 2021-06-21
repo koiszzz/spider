@@ -14,8 +14,8 @@ async function  openBrowser(defaultUrl) {
     const pluginStealth = require("puppeteer-extra-plugin-stealth");
     puppeteer.use(pluginStealth());
     const localBrowser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox']
+        headless: false,
+        // args: ['--no-sandbox']
     });
     console.log('打开浏览器');
     if (defaultUrl) {

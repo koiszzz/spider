@@ -58,6 +58,7 @@ module.exports = async function (company, browser) {
                 throw new Error('验证码验证失败');
             }
         }
+        // await first.pdf({path: 'login.pdf'});
         await first.waitForSelector('.npanel-heading .text-danger');
         // 判断查询结果数量
         const searchCount = await first.evaluate(() => {
@@ -95,7 +96,7 @@ module.exports = async function (company, browser) {
             });
         });
         let filterResult = matchCompanies.filter((v) => {
-            return (v.name === company || (v.usedName && v.usedName === company)) && v.tags.length <= 0; // 可能有同名的外企，优先滤掉外企
+            return (v.name === company || (v.usedName && v.usedName === company)) && v.status === '存续'; // 可能有同名的企业, 先找存续
         });
         if (filterResult.length <= 0) {
             filterResult = matchCompanies.filter((v) => {
@@ -105,10 +106,15 @@ module.exports = async function (company, browser) {
                 return {};
             }
         }
+        console.log(filterResult);
+        console.log(filterResult[0].url);
+        await first.waitFor(1000);
         await first.goto(filterResult[0].url);
-        await first.waitForSelector('a.company-nav-head');
+        // await first.pdf({path: 'page.pdf'});
+        console.log(await first.url());
+        await first.waitForSelector('.nav-head a');
         const base_url = await first.evaluate(() => {
-            const navs = Array.from(document.querySelectorAll('a.company-nav-head'));
+            const navs = Array.from(document.querySelectorAll('.nav-head a'));
             for (let i = 0; i < navs.length; i++) {
                 if (navs[i].textContent.includes('基本信息')) {
                     if (i === 0) {
@@ -122,14 +128,14 @@ module.exports = async function (company, browser) {
         if (base_url != null) {
             await first.goto(base_url);
         }
-        await first.waitForSelector('#Cominfo');
+        await first.waitForSelector('#cominfo');
         const content = await first.evaluate(() => {
             let info = {
                 basic_info: '',
                 changes: [],
                 intro: ''
             };
-            Array.from(document.querySelector('#Cominfo').querySelectorAll('td')).map((row, index) => {
+            Array.from(document.querySelector('#cominfo').querySelectorAll('td')).map((row, index) => {
                 info.basic_info += row.textContent.replace(/[\r\n\s]+/g, '').trim();
                 if (index % 2 == 1) {
                     info.basic_info += '\r\n';
@@ -139,8 +145,9 @@ module.exports = async function (company, browser) {
             });
             info.basic_info = info.basic_info.replace(/[他]?关联([\s]?\d{1,})?家企业/, '').replace('>', '')
                 .replace('查看地图', '').replace('附近企业', '');
-            const sections = ['partnerslist', 'Mainmember', 'touzilist', 'branchelist', 'stockholderslist'];
-            sections.map((id) => {
+            const oldSections = ['partnerslist', 'Mainmember', 'touzilist', 'branchelist', 'stockholderslist'];
+            const sections = ['partner', 'mainmember', 'touzilist', 'branchelist', 'publicity'];
+            sections.map((id,i) => {
                 const listElement = document.querySelector('#' + id);
                 if (listElement === undefined || listElement === null) { // 不同企业展示的区块不一样
                     return;
@@ -165,10 +172,10 @@ module.exports = async function (company, browser) {
                             .trim();
                     }));
                 });
-                info[id] = res;
+                info[oldSections[i]] = res;
             });
 
-            const Changelist = document.querySelector('#Changelist');
+            const Changelist = document.querySelector('#changelist');
             if (Changelist) {
                 info.changes.push(Array.from(Changelist.querySelectorAll('th')).map((row) => {
                     return row.textContent.trim();
@@ -180,14 +187,14 @@ module.exports = async function (company, browser) {
                     info.changes.push(changes.splice(0, info.changes[0].length));
                 }
             }
-            const Comintroduce = document.querySelector('#Comintroduce');
-            if (Comintroduce) {
-                let header = Comintroduce.querySelector('h3') || Comintroduce.querySelector('.tcaption');
-                if (header) {
-                    header.remove();
-                }
-                info.intro = Comintroduce.textContent.replace(/[\r\n\s]+/g, '');
-            }
+            // const Comintroduce = document.querySelector('#Comintroduce');
+            // if (Comintroduce) {
+            //     let header = Comintroduce.querySelector('h3') || Comintroduce.querySelector('.tcaption');
+            //     if (header) {
+            //         header.remove();
+            //     }
+            //     info.intro = Comintroduce.textContent.replace(/[\r\n\s]+/g, '');
+            // }
             return info;
         });
         return content;
