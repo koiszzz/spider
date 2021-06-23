@@ -152,7 +152,7 @@ module.exports = async function (company, browser) {
                 if (listElement === undefined || listElement === null) { // 不同企业展示的区块不一样
                     return;
                 }
-                const tables = Array.from(listElement.querySelectorAll('tbody'));
+                const tables = Array.from(listElement.querySelectorAll('table'));
                 if (!tables || tables.length <= 0) {
                     return;
                 }
@@ -166,8 +166,9 @@ module.exports = async function (company, browser) {
                             .replace('持股详情>', '')
                             .replace(/[他]?关联([\s]?\d{1,})?家企业[\s]+>/, '')
                             .replace(/[\r\n]+/g, '')
-                            .replace('查看最终受益人>', '')
+                            .replace(/最终受益人[>]?/, '')
                             .replace(/([\u4e00-\u9fa5]+\s+序号\s+([\u4e00-\u9fa5]+))/, "$2")
+                            .replace(/([\u4e00-\u9fa5]*)\s([\u4e00-\u9fa5]*)\s([\u4e00-\u9fa5]*)?/, "$2")
                             .replace(/(\d*)\s*([\u4e00-\u9fa5()（）]*)\s*([\u4e00-\u9fa5()（）]*)\s*([\u4e00-\u9fa5]*)\s*>/, "$2")
                             .trim();
                     }));
