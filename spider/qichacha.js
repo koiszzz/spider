@@ -76,7 +76,7 @@ module.exports = async function (company, browser) {
                     name: e.querySelector('.maininfo .title').textContent.trim(),
                     url: e.querySelector('.maininfo a').href,
                     tags: e.querySelector('.maininfo .search-tags').textContent.trim(),
-                    status: e.querySelector('.maininfo .nstatus ').textContent.trim(),
+                    status: e.querySelector('.maininfo .nstatus ') ? e.querySelector('.maininfo .nstatus ').textContent.trim() : '',
                     // search: e.querySelector('p:not(.m-t-xs)').textContent.trim()
                 };
                 Array.from(e.querySelectorAll('.m-t-xs')).map((z) => {
@@ -128,77 +128,92 @@ module.exports = async function (company, browser) {
         if (base_url != null) {
             await first.goto(base_url);
         }
-        await first.waitForSelector('#cominfo');
-        const content = await first.evaluate(() => {
-            let info = {
-                basic_info: '',
-                changes: [],
-                intro: ''
-            };
-            Array.from(document.querySelector('#cominfo').querySelectorAll('td')).map((row, index) => {
-                info.basic_info += row.textContent.replace(/[\r\n\s]+/g, '').trim();
-                if (index % 2 == 1) {
-                    info.basic_info += '\r\n';
-                } else {
-                    info.basic_info += ':';
-                }
-            });
-            info.basic_info = info.basic_info.replace(/[他]?关联([\s]?\d{1,})?家企业/, '').replace('>', '')
-                .replace('查看地图', '').replace('附近企业', '');
-            const oldSections = ['partnerslist', 'Mainmember', 'touzilist', 'branchelist', 'stockholderslist'];
-            const sections = ['partner', 'mainmember', 'touzilist', 'branchelist', 'publicity'];
-            sections.map((id,i) => {
-                const listElement = document.querySelector('#' + id);
-                if (listElement === undefined || listElement === null) { // 不同企业展示的区块不一样
-                    return;
-                }
-                const tables = Array.from(listElement.querySelectorAll('table'));
-                if (!tables || tables.length <= 0) {
-                    return;
-                }
-                const res = [];
-                const p_table = tables[0];
-                Array.from(p_table.children).map((row) => {
-                    res.push(Array.from(row.children).map((cell) => {
-                        return cell.textContent
-                            .replace('查看最终受益人>', '')
-                            .replace(/股权结构[\s]+>/, '')
-                            .replace('持股详情>', '')
-                            .replace(/[他]?关联([\s]?\d{1,})?家企业[\s]+>/, '')
-                            .replace(/[\r\n]+/g, '')
-                            .replace(/最终受益人[>]?/, '')
-                            .replace(/([\u4e00-\u9fa5]+\s+序号\s+([\u4e00-\u9fa5]+))/, "$2")
-                            .replace(/([\u4e00-\u9fa5]*)\s([\u4e00-\u9fa5]*)\s([\u4e00-\u9fa5]*)?/, "$2")
-                            .replace(/(\d*)\s*([\u4e00-\u9fa5()（）]*)\s*([\u4e00-\u9fa5()（）]*)\s*([\u4e00-\u9fa5]*)\s*>/, "$2")
-                            .trim();
-                    }));
+        const companyType = await first.$('#cominfo');
+        if (companyType) {
+            const content = await first.evaluate(() => {
+                let info = {
+                    basic_info: '',
+                    changes: [],
+                    intro: ''
+                };
+                Array.from(document.querySelector('#cominfo').querySelectorAll('td')).map((row, index) => {
+                    info.basic_info += row.textContent.replace(/[\r\n\s]+/g, '').trim();
+                    if (index % 2 == 1) {
+                        info.basic_info += '\r\n';
+                    } else {
+                        info.basic_info += ':';
+                    }
                 });
-                info[oldSections[i]] = res;
-            });
+                info.basic_info = info.basic_info.replace(/[他]?关联([\s]?\d{1,})?家企业/, '').replace('>', '')
+                    .replace('查看地图', '').replace('附近企业', '');
+                const oldSections = ['partnerslist', 'Mainmember', 'touzilist', 'branchelist', 'stockholderslist'];
+                const sections = ['partner', 'mainmember', 'touzilist', 'branchelist', 'publicity'];
+                sections.map((id,i) => {
+                    const listElement = document.querySelector('#' + id);
+                    if (listElement === undefined || listElement === null) { // 不同企业展示的区块不一样
+                        return;
+                    }
+                    const tables = Array.from(listElement.querySelectorAll('table'));
+                    if (!tables || tables.length <= 0) {
+                        return;
+                    }
+                    const res = [];
+                    const p_table = tables[0];
+                    Array.from(p_table.children).map((row) => {
+                        res.push(Array.from(row.children).map((cell) => {
+                            return cell.textContent
+                                .replace('查看最终受益人>', '')
+                                .replace(/股权结构[\s]+>/, '')
+                                .replace('持股详情>', '')
+                                .replace(/[他]?关联([\s]?\d{1,})?家企业[\s]+>/, '')
+                                .replace(/[\r\n]+/g, '')
+                                .replace(/最终受益人[>]?/, '')
+                                .replace(/([\u4e00-\u9fa5]+\s+序号\s+([\u4e00-\u9fa5]+))/, "$2")
+                                .replace(/([\u4e00-\u9fa5]*)\s([\u4e00-\u9fa5]*)\s([\u4e00-\u9fa5]*)?/, "$2")
+                                .replace(/(\d*)\s*([\u4e00-\u9fa5()（）]*)\s*([\u4e00-\u9fa5()（）]*)\s*([\u4e00-\u9fa5]*)\s*>/, "$2")
+                                .trim();
+                        }));
+                    });
+                    info[oldSections[i]] = res;
+                });
 
-            const Changelist = document.querySelector('#changelist');
-            if (Changelist) {
-                info.changes.push(Array.from(Changelist.querySelectorAll('th')).map((row) => {
-                    return row.textContent.trim();
-                }));
-                const changes = Array.from(Changelist.querySelectorAll('td')).map((row) => {
-                    return row.textContent.replace(/\s+/, '').trim();
-                });
-                while (changes.length) {
-                    info.changes.push(changes.splice(0, info.changes[0].length));
+                const Changelist = document.querySelector('#changelist');
+                if (Changelist) {
+                    info.changes.push(Array.from(Changelist.querySelectorAll('th')).map((row) => {
+                        return row.textContent.trim();
+                    }));
+                    const changes = Array.from(Changelist.querySelectorAll('td')).map((row) => {
+                        return row.textContent.replace(/\s+/, '').trim();
+                    });
+                    while (changes.length) {
+                        info.changes.push(changes.splice(0, info.changes[0].length));
+                    }
                 }
-            }
-            // const Comintroduce = document.querySelector('#Comintroduce');
-            // if (Comintroduce) {
-            //     let header = Comintroduce.querySelector('h3') || Comintroduce.querySelector('.tcaption');
-            //     if (header) {
-            //         header.remove();
-            //     }
-            //     info.intro = Comintroduce.textContent.replace(/[\r\n\s]+/g, '');
-            // }
-            return info;
-        });
-        return content;
+                return info;
+            });
+            return content;
+        } else {
+            return await first.evaluate(() => {
+                let info = {
+                    basic_info: '',
+                    changes: [],
+                    intro: ''
+                };
+                Array.from(document.querySelector('#socominfo').querySelectorAll('td')).map((row, index) => {
+                    info.basic_info += row.textContent.replace(/[\r\n\s]+/g, '').trim();
+                    if (index % 2 == 1) {
+                        info.basic_info += '\r\n';
+                    } else {
+                        info.basic_info += ':';
+                    }
+                });
+                info.basic_info = info.basic_info.replace(/[他]?关联([\s]?\d{1,})?家企业/, '').replace('>', '')
+                    .replace('查看地图', '').replace('附近企业', '');
+
+                return info;
+            })
+        }
+
     } catch (e) {
         console.log(e);
         throw new Error(`模拟抓取出错:${e.message}`);
