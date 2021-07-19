@@ -71,7 +71,7 @@ module.exports = async function (company, browser) {
         }
         await first.waitForSelector('.msearch');
         const matchCompanies = await first.evaluate(() => {
-            return Array.from(document.querySelectorAll('.msearch tr:not(.frtr)')).map((e) => {
+            return Array.from(document.querySelectorAll('.msearch tr:not(.frtr).frtrt')).map((e) => {
                 const d = {
                     name: e.querySelector('.maininfo .title').textContent.trim(),
                     url: e.querySelector('.maininfo a').href,
